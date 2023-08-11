@@ -4,7 +4,7 @@ type PipeObjectConstructor = {
 	ctx: CanvasRenderingContext2D;
 	position: { x: number, y: number };
 	state: 'top' | 'bottom';
-  imagePrefix: string;
+  image: CanvasImageSource;
 };
 
 class Pipe {
@@ -15,12 +15,12 @@ class Pipe {
 	ctx: CanvasRenderingContext2D;
 	position: { x: number, y: number };
 
-	constructor({ ctx, position, state, imagePrefix }: PipeObjectConstructor) {
+	constructor({ ctx, position, state, image }: PipeObjectConstructor) {
 		this.position = position;
 		this.height = 528;
 		this.width = 92;
 		this.state = state;
-		this.image = createImage(`${imagePrefix}${this.state}.png`);
+		this.image = image;
 		this.ctx = ctx;
 	}
 

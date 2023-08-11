@@ -5,7 +5,7 @@ type PlayerObjectConstructor = {
 	g: number;
 	speed: number;
 	ctx: CanvasRenderingContext2D;
-  imageUrl: string;
+  image: CanvasImageSource;
 };
 
 type BirdState = 'upward' | 'downward' | 'forward';
@@ -33,7 +33,7 @@ class Player {
 	sprite: Sprites;
 	state: 'upward' | 'downward' | 'forward';
 
-	constructor({ ctx, screenX, screenY, speed, g, imageUrl }: PlayerObjectConstructor) {
+	constructor({ ctx, screenX, screenY, speed, g, image }: PlayerObjectConstructor) {
 		this.ctx = ctx;
 		this.gravity = g;
 		this.screenX = screenX;
@@ -45,7 +45,7 @@ class Player {
 		this.lose = false;
 		this.velocity = 0;
 		this.speed = speed;
-		this.image = createImage(imageUrl);
+		this.image = image;
 		this.position = { x: (this.screenX / 4) - this.width, y: (this.screenY / 2) - this.height };
 		this.sprite = {
 			x: 92,
