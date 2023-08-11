@@ -325,7 +325,22 @@ const animate = () => {
       const text = ctx.measureText(score);
 
       const x = width / 2 - text.width / 2;
-      const y = 300;
+      const y = 260;
+
+      ctx.strokeStyle = "rgb(0, 0, 0)";
+      ctx.lineWidth = 8;
+      ctx.strokeText(score, x, y);
+      ctx.fillStyle = "rgb(255, 255, 255)";
+      ctx.fillText(score, x, y);
+    }
+
+    {
+      const score = "BEST: " + SCORE.BEST;
+      ctx.font = "32px FlappyBird";
+      const text = ctx.measureText(score);
+
+      const x = width / 2 - text.width / 2;
+      const y = 500;
 
       ctx.strokeStyle = "rgb(0, 0, 0)";
       ctx.lineWidth = 8;
@@ -421,7 +436,7 @@ const updateCurrentScore = () => {
   if (stillness) {
     return;
   }
-  const score = `${SCORE.CURRENT} : ${SCORE.BEST}`;
+  const score = `${SCORE.CURRENT}`;
 
   ctx.font = "44px FlappyBird";
   const text = ctx.measureText(score);
@@ -466,6 +481,9 @@ const whenPlayerJump = () => {
 };
 
 const pay = async () => {
+  if (!pipes.some((pipe) => player.position.x >= pipe.position.x)) {
+    return;
+  }
   try {
     ++SCORE.CURRENT;
     /*const invoice = await ln.requestInvoice({
