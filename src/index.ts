@@ -44,7 +44,7 @@ let animation: number,
   pipes: Pipe[],
   lightningStrikes: LightningStrike[];
 
-let firstRound = true;
+let isFirstRound = true;
 
 const BASE_URL = "/zappy-bird";
 const IMAGES = {
@@ -70,6 +70,7 @@ const pipeBottomImage = createImage(IMAGES.pipeBottom);
 const ln = new LightningAddress("zappybird@getalby.com");
 
 let gameUniqueId: string = "";
+let canRestart = false;
 
 (async () => {
   // fetch the LNURL data
@@ -172,6 +173,9 @@ const cancelAnimation = () => {
 };
 
 const whenPlayerLose = (userIsLose: boolean = false) => {
+  if (stillness) {
+    return;
+  }
   if (
     userIsLose ||
     player.height + player.position.y + player.velocity >=
@@ -186,8 +190,14 @@ const whenPlayerLose = (userIsLose: boolean = false) => {
 
   updateBestScore(SCORE.CURRENT);
 
-  document.body.style.cursor = "pointer";
-  window.addEventListener("click", restart);
+  setTimeout(
+    () => {
+      canRestart = true;
+      document.body.style.cursor = "pointer";
+      window.addEventListener("click", restart);
+    },
+    isFirstRound ? 0 : 1000
+  );
 };
 
 const whenPlayerDamaged = () => {
@@ -293,7 +303,9 @@ const animate = () => {
   ctx.fillRect(0, 0, width, height);
 
   if (stillness) {
-    drawRestartButton();
+    if (canRestart && !isFirstRound) {
+      drawRestartButton();
+    }
 
     ctx.font = "64px FlappyBird";
     ctx.fillStyle = "white";
@@ -319,7 +331,8 @@ const restart = async () => {
     alert("Please connect your wallet");
     return;
   }
-  firstRound = false;
+  isFirstRound = false;
+  canRestart = false;
 
   window.removeEventListener("click", restart);
   document.body.style.cursor = "default";
@@ -434,15 +447,16 @@ const whenPlayerJump = () => {
 
 const pay = async () => {
   try {
-    /*const invoice = await ln.requestInvoice({
-      satoshi: 1,
-      comment: "zappy bird - " + gameUniqueId,
-    });
-    const result = await window.webln.sendPayment(invoice.paymentRequest);
-    if (!result.preimage) {
-      throw new Error("No preimage received");
-    }*/
     ++SCORE.CURRENT;
+    /*const invoice = await ln.requestInvoice({
+        satoshi: 1,
+        comment: "zappy bird - " + gameUniqueId,
+      });
+      const result = await window.webln.sendPayment(invoice.paymentRequest);
+      if (!result.preimage) {
+        throw new Error("No preimage received");
+      }*/
+
     lightningStrikes.push(
       new LightningStrike({
         ctx,
@@ -470,7 +484,9 @@ document.addEventListener("keypress", ({ keyCode }) => {
   if (![32, 38].includes(keyCode) || JUMP_KEY_PRESSED) return;
 
   if (player.lose) {
-    restart();
+    if (canRestart) {
+      restart();
+    }
     return;
   }
 
