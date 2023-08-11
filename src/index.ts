@@ -69,6 +69,8 @@ const pipeBottomImage = createImage(IMAGES.pipeBottom);
 
 const ln = new LightningAddress("zappybird@getalby.com");
 
+let gameUniqueId: string = "";
+
 (async () => {
   // fetch the LNURL data
   await ln.fetch();
@@ -292,6 +294,16 @@ const animate = () => {
 
   if (stillness) {
     drawRestartButton();
+
+    ctx.font = "64px FlappyBird";
+    ctx.fillStyle = "white";
+    const text = ctx.measureText(gameUniqueId);
+    const x = width / 2 - text.width / 2;
+    const y = 200;
+    ctx.strokeStyle = "rgb(0, 0, 0)";
+    ctx.lineWidth = 0;
+    ctx.strokeText(gameUniqueId, x, y);
+    ctx.fillText(gameUniqueId, x, y);
   }
 };
 
@@ -311,6 +323,11 @@ const restart = async () => {
 
   window.removeEventListener("click", restart);
   document.body.style.cursor = "default";
+  gameUniqueId =
+    "#" +
+    Array.from(Array(7), () => Math.floor(Math.random() * 10))
+      .join("")
+      .toUpperCase();
   start();
   whenPlayerJump();
 };
@@ -419,7 +436,7 @@ const pay = async () => {
   try {
     /*const invoice = await ln.requestInvoice({
       satoshi: 1,
-      comment: "zappy bird",
+      comment: "zappy bird - " + gameUniqueId,
     });
     const result = await window.webln.sendPayment(invoice.paymentRequest);
     if (!result.preimage) {
