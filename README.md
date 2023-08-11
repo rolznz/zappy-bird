@@ -23,3 +23,7 @@ OR `yarn`
     
 	$ yarn install
 	$ yarn start
+
+# Deploy
+
+./deploy.sh

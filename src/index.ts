@@ -43,16 +43,20 @@ let animation: number,
 
 let firstRound = true;
 
-const BASE_URL = '';
+const BASE_URL = '/zappy-bird';
 const IMAGES = {
 	ground: BASE_URL + '/assets/images/ground.png',
 	background: BASE_URL + '/assets/images/background.png',
 	restart: BASE_URL + '/assets/images/restart.png',
-	play: BASE_URL + '/assets/images/play.png'
+	play: BASE_URL + '/assets/images/play.png',
+	bird: BASE_URL + '/assets/images/bird.png',
+	pipePrefix: BASE_URL + '/assets/images/pipe-',
 };
 
 const canvas = document.getElementById('flappyBird') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d');
+
+const restartImage = createImage(IMAGES.restart);
 
 /* Code */
 const addNewPlatform = () => {
@@ -75,8 +79,8 @@ const addPipe = (space: number) => {
 	let lastPipeX: Pipe | number = pipes[pipes.length - 1];
 	lastPipeX = lastPipeX ? lastPipeX.position.x + SIZES.PIPE.WIDTH + 20 : Math.max(Math.floor(width * 0.75), height);
 
-	const pipe1 = new Pipe({ ctx, position: { x: lastPipeX, y: floor + space }, state: 'bottom' });
-	const pipe2 = new Pipe({ ctx, position: { x: lastPipeX, y: pipe1.position.y - SIZES.PIPE.HEIGHT - 225 }, state: 'top' });
+	const pipe1 = new Pipe({ ctx, position: { x: lastPipeX, y: floor + space }, state: 'bottom', imagePrefix: IMAGES.pipePrefix });
+	const pipe2 = new Pipe({ ctx, position: { x: lastPipeX, y: pipe1.position.y - SIZES.PIPE.HEIGHT - 225 }, state: 'top', imagePrefix: IMAGES.pipePrefix });
 
 	pipes.push(pipe1, pipe2);
 }
@@ -113,7 +117,7 @@ const addGenericObjects = () => {
 };
 
 const loadPlayer = () => {
-	player = new Player({ ctx, screenX: width, screenY: height, speed: CONFIG.PLAYER_SPEED, g: 0 });
+	player = new Player({ ctx, screenX: width, screenY: height, speed: CONFIG.PLAYER_SPEED, g: 0, imageUrl: IMAGES.bird });
 	player.draw();
 };
 
@@ -347,9 +351,9 @@ const whenPlayerJump = () => {
 const drawRestartButton = () => {
 	const w = 142;
 	const h = 50;
-	const image = createImage(IMAGES.restart);
+	
 
-	ctx.drawImage(image, (width / 2) - (w / 2), (height / 2) - (h - 2), w, h);
+	ctx.drawImage(restartImage, (width / 2) - (w / 2), (height / 2) - (h - 2), w, h);
 };
 
 canvas.addEventListener('mousedown', whenPlayerJump);

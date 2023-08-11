@@ -9,8 +9,9 @@ module.exports = merge(common, {
 
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: '[name].bundle.[contenthash:8].js'
+		filename: '[name].bundle.[contenthash:8].js',
 	},
+  
 
 	devServer: {
 		port: 3000 || 3001 || 3002 || 3003,
@@ -21,6 +22,12 @@ module.exports = merge(common, {
 			reconnect: true,
 			logging: 'error',
 		},
+    proxy: {
+      '/zappy-bird': {
+        target: 'http://localhost:3000', // Change to your actual local server URL
+        pathRewrite: { '^/zappy-bird': '' },
+      },
+    },
 	},
 
 	optimization: {
