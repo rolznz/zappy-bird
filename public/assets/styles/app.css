@@ -1,64 +1,76 @@
 @font-face {
-	font-family: 'FlappyBird';
-	src: url("/zappy-bird/assets/assets/fonts/fb/flappy-bird.eot");
-	src: url("/zappy-bird/assets/fonts/fb/flappy-bird.eot?#iefix") format("embedded-opentype"), url("/zappy-bird/assets/fonts/fb/flappy-bird.woff") format("woff"), url("/zappy-bird/assets/fonts/fb/flappy-bird.ttf") format("truetype"), url("/zappy-bird/assets/fonts/fb/flappy-bird.svg#04b_19regular") format("svg");
-	font-weight: normal;
-	font-style: normal
+  font-family: "FlappyBird";
+  src: url("/zappy-bird/assets/assets/fonts/fb/flappy-bird.eot");
+  src: url("/zappy-bird/assets/fonts/fb/flappy-bird.eot?#iefix")
+      format("embedded-opentype"),
+    url("/zappy-bird/assets/fonts/fb/flappy-bird.woff") format("woff"),
+    url("/zappy-bird/assets/fonts/fb/flappy-bird.ttf") format("truetype"),
+    url("/zappy-bird/assets/fonts/fb/flappy-bird.svg#04b_19regular")
+      format("svg");
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-	font-family: 'Helvetica';
-	src: url("/zappy-bird/assets/fonts/helvetica/helvetica-light-587ebe5a59211.ttf");
-	font-weight: 300;
-	font-style: normal
+  font-family: "Helvetica";
+  src: url("/zappy-bird/assets/fonts/helvetica/helvetica-light-587ebe5a59211.ttf");
+  font-weight: 300;
+  font-style: normal;
 }
 
 @font-face {
-	font-family: 'Helvetica';
-	src: url("/zappy-bird/assets/fonts/helvetica/helvetica-light-587ebe5a59211.ttf");
-	font-weight: normal;
-	font-style: normal
+  font-family: "Helvetica";
+  src: url("/zappy-bird/assets/fonts/helvetica/helvetica-light-587ebe5a59211.ttf");
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-	font-family: 'Helvetica';
-	src: url("/zappy-bird/assets/fonts/helvetica/helvetica-compressed-5871d14b6903a.otf");
-	font-weight: 500;
-	font-style: normal
+  font-family: "Helvetica";
+  src: url("/zappy-bird/assets/fonts/helvetica/helvetica-compressed-5871d14b6903a.otf");
+  font-weight: 500;
+  font-style: normal;
 }
 
 * {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	user-select: none;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  user-select: none;
 }
 
 body {
-	background-color: rgb(38, 43, 48);
-	overflow: hidden;
-	font: normal 24px Helvetica,Arial,sans-serif;
-	width: 100vw;
-	height: 100vh;
-	min-height: 100vh;
-	max-height: 100%;
+  background-color: rgb(38, 43, 48);
+  overflow: hidden;
+  font: normal 24px Helvetica, Arial, sans-serif;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100%;
 }
 
 a,
 a:hover,
 a:active {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 a,
 button,
 input,
 textarea {
-	outline: none !important;
+  outline: none !important;
 }
 
 img {
-	pointer-events: none;
+  pointer-events: none;
+}
+
+.lwc {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
 }

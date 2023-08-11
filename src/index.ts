@@ -194,7 +194,7 @@ const whenPlayerLose = (userIsLose: boolean = false) => {
     () => {
       canRestart = true;
       document.body.style.cursor = "pointer";
-      window.addEventListener("click", restart);
+      document.getElementById("flappyBird").addEventListener("click", restart);
     },
     isFirstRound ? 0 : 1000
   );
@@ -353,20 +353,24 @@ const animate = () => {
 
 const restart = async () => {
   let weblnEnabled = false;
+
   try {
+    if (!window.webln) {
+      throw new Error("No WebLN");
+    }
     await window.webln?.enable();
     weblnEnabled = true;
   } catch (error) {
     console.error(error);
   }
   if (!weblnEnabled) {
-    alert("Please connect your wallet");
+    alert("Please connect your lightning wallet");
     return;
   }
   isFirstRound = false;
   canRestart = false;
 
-  window.removeEventListener("click", restart);
+  document.getElementById("flappyBird").removeEventListener("click", restart);
   document.body.style.cursor = "default";
   gameUniqueId =
     "#" +
@@ -485,15 +489,16 @@ const pay = async () => {
     return;
   }
   try {
+    const invoice = await ln.requestInvoice({
+      satoshi: 1,
+      comment: "zappy bird - " + gameUniqueId,
+    });
+    const result = await window.webln.sendPayment(invoice.paymentRequest);
+    if (!result.preimage) {
+      throw new Error("No preimage received");
+    }
+
     ++SCORE.CURRENT;
-    /*const invoice = await ln.requestInvoice({
-        satoshi: 1,
-        comment: "zappy bird - " + gameUniqueId,
-      });
-      const result = await window.webln.sendPayment(invoice.paymentRequest);
-      if (!result.preimage) {
-        throw new Error("No preimage received");
-      }*/
 
     lightningStrikes.push(
       new LightningStrike({
