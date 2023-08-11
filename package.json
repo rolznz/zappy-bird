@@ -1,7 +1,7 @@
 {
-	"name": "flappy-bird",
+	"name": "zappy-bird",
 	"version": "1.0.0",
-	"description": "Flappy Bird is an arcade-style game in which the player controls the bird Faby, which moves persistently to the right. The player is tasked with navigating Faby through pairs of pipes that have equally sized gaps placed at random heights.",
+	"description": "Zappy Bird is an arcade-style game in which the player controls the bird Faby, which moves persistently to the right. The player is tasked with navigating Faby through pairs of pipes that have equally sized gaps placed at random heights.",
 	"main": "src/index.ts",
 	"scripts": {
 		"start": "webpack serve --open --config config/webpack.dev.js",
@@ -11,7 +11,7 @@
 		"webpack",
 		"zappy-bird"
 	],
-	"author": "Ali Yaghoubi",
+	"author": "Roland",
 	"license": "ISC",
 	"devDependencies": {
 		"@babel/core": "^7.17.2",
