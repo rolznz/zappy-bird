@@ -3,6 +3,7 @@ import Platform from "./classes/Platform";
 import GenericObject from "./classes/GenericObject";
 import { createImage, encodeScore, getRndInteger, decodeScore } from './helper';
 import Pipe from "./classes/Pipe";
+import { LightningAddress } from "@getalby/lightning-tools";
 
 /* Variables */
 let JUMP_KEY_PRESSED = false;
@@ -63,6 +64,16 @@ const bgImage = createImage(IMAGES.background);
 const playerImage = createImage(IMAGES.bird);
 const pipeTopImage = createImage(IMAGES.pipeTop);
 const pipeBottomImage = createImage(IMAGES.pipeBottom);
+
+const ln = new LightningAddress("zappybird@getalby.com");
+let lnLoaded = false;
+
+(async () => {
+  // fetch the LNURL data
+  await ln.fetch();
+  lnLoaded = true;
+})();
+
 
 
 /* Code */
@@ -234,16 +245,21 @@ const animate = () => {
 };
 
 const restart = async () => {
-  /*try {
-    await (window as any).webln?.enable();
+  let weblnEnabled = false;
+  try {
+    if (!lnLoaded) {
+      throw new Error("Lightning address not loaded yet");
+    }
+    await window.webln?.enable();
+    weblnEnabled = true;
   }
   catch(error) {
     console.error(error);
   }
-  if (!(window as any).webln?.enabled) {
+  if (!weblnEnabled) {
     alert("Please connect your wallet");
     return;
-  }*/
+  }
   firstRound = false;
 
 	window.removeEventListener('click', restart);
@@ -343,12 +359,29 @@ const whenPlayerJump = () => {
 		player.stillness = false;
 		player.gravity = CONFIG.GRAVITY;
 	}
+  else {
+    pay();
+  }
 
 	/* When user pressed space */
 	player.velocity = CONFIG.PLAYER_VELOCITY_WHILE_JUMP;
 
 	JUMP_KEY_PRESSED = true;
 };
+
+const pay = async () => {
+  const invoice = await ln.requestInvoice({satoshi: 1, comment: "zappy bird"});
+  try {
+    const result = await window.webln.sendPayment(invoice.paymentRequest);
+    if (!result.preimage) {
+      throw new Error("No preimage received")
+    }
+  }
+  catch(error) {
+    whenPlayerLose();
+    alert("Lightning payment failed");
+  }
+}
 
 const drawRestartButton = () => {
 	const w = 142;
