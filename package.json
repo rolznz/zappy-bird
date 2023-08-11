@@ -17,6 +17,7 @@
 		"@babel/core": "^7.17.2",
 		"@babel/plugin-syntax-dynamic-import": "^7.8.3",
 		"@babel/preset-env": "^7.16.11",
+		"@types/seedrandom": "^3.0.5",
 		"@webbtc/webln-types": "^1.0.14",
 		"babel-loader": "^8.2.3",
 		"css-loader": "^6.6.0",
@@ -37,6 +38,7 @@
 	},
 	"dependencies": {
 		"@getalby/lightning-tools": "^4.0.2",
-		"copy-webpack-plugin": "^11.0.0"
+		"copy-webpack-plugin": "^11.0.0",
+		"seedrandom": "^3.0.5"
 	}
 }
