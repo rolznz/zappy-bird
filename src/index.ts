@@ -302,20 +302,37 @@ const animate = () => {
   ctx.fillStyle = `rgba(0,0,0, ${(1 - lightningLight) * 0.2})`;
   ctx.fillRect(0, 0, width, height);
 
-  if (stillness) {
-    if (canRestart && !isFirstRound) {
+  if (stillness && !isFirstRound) {
+    if (canRestart) {
       drawRestartButton();
     }
 
-    ctx.font = "64px FlappyBird";
-    ctx.fillStyle = "white";
-    const text = ctx.measureText(gameUniqueId);
-    const x = width / 2 - text.width / 2;
-    const y = 200;
-    ctx.strokeStyle = "rgb(0, 0, 0)";
-    ctx.lineWidth = 0;
-    ctx.strokeText(gameUniqueId, x, y);
-    ctx.fillText(gameUniqueId, x, y);
+    {
+      ctx.font = "64px FlappyBird";
+      ctx.fillStyle = "white";
+      const text = ctx.measureText(gameUniqueId);
+      const x = width / 2 - text.width / 2;
+      const y = 200;
+      ctx.strokeStyle = "rgb(0, 0, 0)";
+      ctx.lineWidth = 0;
+      ctx.strokeText(gameUniqueId, x, y);
+      ctx.fillText(gameUniqueId, x, y);
+    }
+
+    {
+      const score = "SCORE: " + SCORE.CURRENT;
+      ctx.font = "44px FlappyBird";
+      const text = ctx.measureText(score);
+
+      const x = width / 2 - text.width / 2;
+      const y = 300;
+
+      ctx.strokeStyle = "rgb(0, 0, 0)";
+      ctx.lineWidth = 8;
+      ctx.strokeText(score, x, y);
+      ctx.fillStyle = "rgb(255, 255, 255)";
+      ctx.fillText(score, x, y);
+    }
   }
 };
 
@@ -401,6 +418,9 @@ const updateBestScore = (score: number) => {
 };
 
 const updateCurrentScore = () => {
+  if (stillness) {
+    return;
+  }
   const score = `${SCORE.CURRENT} : ${SCORE.BEST}`;
 
   ctx.font = "44px FlappyBird";
