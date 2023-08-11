@@ -41,11 +41,14 @@ let animation: number,
 	stillness: boolean = false,
 	pipes: Pipe[];
 
-const BASE_URL = 'https://flappy-bird-ay.netlify.app';
+let firstRound = true;
+
+const BASE_URL = '';
 const IMAGES = {
 	ground: BASE_URL + '/assets/images/ground.png',
 	background: BASE_URL + '/assets/images/background.png',
-	restart: BASE_URL + '/assets/images/restart.png'
+	restart: BASE_URL + '/assets/images/restart.png',
+	play: BASE_URL + '/assets/images/play.png'
 };
 
 const canvas = document.getElementById('flappyBird') as HTMLCanvasElement;
@@ -70,7 +73,7 @@ const addNewPlatform = () => {
 const addPipe = (space: number) => {
 	const floor = height - SIZES.PIPE.HEIGHT;
 	let lastPipeX: Pipe | number = pipes[pipes.length - 1];
-	lastPipeX = lastPipeX ? lastPipeX.position.x + SIZES.PIPE.WIDTH + 20 : scrollOffset + 750;
+	lastPipeX = lastPipeX ? lastPipeX.position.x + SIZES.PIPE.WIDTH + 20 : Math.max(Math.floor(width * 0.75), height);
 
 	const pipe1 = new Pipe({ ctx, position: { x: lastPipeX, y: floor + space }, state: 'bottom' });
 	const pipe2 = new Pipe({ ctx, position: { x: lastPipeX, y: pipe1.position.y - SIZES.PIPE.HEIGHT - 225 }, state: 'top' });
@@ -136,20 +139,17 @@ const whenPlayerLose = (userIsLose: boolean = false) => {
 		player.position.y = platforms[0].position.y - player.height;
 		player.lose = true;
 
-		cancelAnimation();
+		//cancelAnimation();
 	}
 	stillness = true;
 
 	updateBestScore(SCORE.CURRENT);
-	createRestartButton();
 
 	document.body.style.cursor = 'pointer';
 	window.addEventListener('click', restart);
 };
 
 const whenPlayerDamaged = () => {
-	if (!window.canLose) return;
-
 	let reachedPipes = 0;
 	pipes.forEach(pipe => {
 		if (player.position.x >= pipe.position.x + pipe.width) reachedPipes++;
@@ -196,6 +196,7 @@ const animate = () => {
 	// Code
 	animation = requestAnimationFrame(animate);
 	ctx.clearRect(0, 0, width, height);
+  
 
 	genericObjects.forEach(obj => obj.draw());
 
@@ -218,14 +219,31 @@ const animate = () => {
 
 	if (player.height + player.position.y + player.velocity >= platforms[0].position.y) whenPlayerLose(true);
 
+  if (!player.stillness) {}
 	scrollOffset += player.speed;
+
+  if (stillness) {
+    drawRestartButton();
+  }
 };
 
-const restart = () => {
+const restart = async () => {
+  try {
+    await (window as any).webln?.enable();
+  }
+  catch(error) {
+    console.error(error);
+  }
+  if (!(window as any).webln?.enabled) {
+    alert("Please connect your wallet");
+    return;
+  }
+  firstRound = false;
+
 	window.removeEventListener('click', restart);
 	document.body.style.cursor = 'default';
-
 	start();
+  whenPlayerJump();
 };
 
 const start = () => {
@@ -250,17 +268,6 @@ const start = () => {
 	if (animation) cancelAnimation();
 
 	setTimeout(animate, 25);
-};
-
-const logMyName = () => {
-	console.log(`
-██╗░█████╗░███╗░░░███╗░█████╗░██╗░░░░░██╗██╗░░░██╗██████╗░██╗
-██║██╔══██╗████╗░████║██╔══██╗██║░░░░░██║╚██╗░██╔╝██╔══██╗██║
-██║███████║██╔████╔██║███████║██║░░░░░██║░╚████╔╝░██████╦╝██║
-██║██╔══██║██║╚██╔╝██║██╔══██║██║░░░░░██║░░╚██╔╝░░██╔══██╗██║
-██║██║░░██║██║░╚═╝░██║██║░░██║███████╗██║░░░██║░░░██████╦╝██║
-╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝╚═╝░░╚═╝╚══════╝╚═╝░░░╚═╝░░░╚═════╝░╚═╝
-	`);
 };
 
 const resetScore = () => {
@@ -310,22 +317,16 @@ const updateCurrentScore = () => {
 };
 
 const init = () => {
-	window.canLose = true;
 
-	logMyName();
-
-	console.log("%cHello dear developer,", "color: green; font-size: 14px");
-	console.log("%cTry:", "color: green; font-size: 14px");
-	console.log("%cwindow.canLose = false;", "color: red; font-size: 14px");
-
-	width = window.innerWidth > 480 ? 480 : window.innerWidth;
-	height = window.innerHeight > 640 ? 640 : window.innerHeight;
+	width = window.innerWidth;
+	height = window.innerHeight;
 
 	canvas.width = width;
 	canvas.height = height;
 
 	updateScore();
 	start();
+  whenPlayerLose();
 };
 
 const whenPlayerJump = () => {
@@ -343,7 +344,7 @@ const whenPlayerJump = () => {
 	JUMP_KEY_PRESSED = true;
 };
 
-const createRestartButton = () => {
+const drawRestartButton = () => {
 	const w = 142;
 	const h = 50;
 	const image = createImage(IMAGES.restart);
@@ -354,7 +355,12 @@ const createRestartButton = () => {
 canvas.addEventListener('mousedown', whenPlayerJump);
 
 document.addEventListener('keypress', ({ keyCode }) => {
-	if (![32, 38].includes(keyCode) || player.lose || JUMP_KEY_PRESSED) return;
+	if (![32, 38].includes(keyCode) || JUMP_KEY_PRESSED) return;
+
+  if (player.lose) {
+    restart();
+    return;
+  }
 
 	whenPlayerJump();
 });
