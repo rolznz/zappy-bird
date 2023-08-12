@@ -291,6 +291,10 @@ const animate = () => {
     movingObjects();
   }
 
+  if (stillness && isFirstRound && Math.random() < 0.005) {
+    addLightningStrike();
+  }
+
   drawLightning();
 
   const lightningLight = Math.min(
@@ -566,6 +570,7 @@ const init = () => {
   updateScore();
   start();
   whenPlayerLose();
+  setTimeout(() => addLightningStrike(), 1000);
 };
 
 const whenPlayerJump = () => {
@@ -601,18 +606,22 @@ const pay = async () => {
 
     ++SCORE.CURRENT;
 
-    lightningStrikes.push(
-      new LightningStrike({
-        ctx,
-        width,
-        height,
-        groundHeight: SIZES.GROUND.HEIGHT,
-      })
-    );
+    addLightningStrike();
   } catch (error) {
     //whenPlayerLose();
     console.error("Lightning payment failed", error);
   }
+};
+
+const addLightningStrike = () => {
+  lightningStrikes.push(
+    new LightningStrike({
+      ctx,
+      width,
+      height,
+      groundHeight: SIZES.GROUND.HEIGHT,
+    })
+  );
 };
 
 const drawRestartButton = () => {
