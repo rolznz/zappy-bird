@@ -5,6 +5,11 @@ import { createImage, encodeScore, getRndInteger, decodeScore } from "./helper";
 import Pipe from "./classes/Pipe";
 import { LightningAddress } from "@getalby/lightning-tools";
 import LightningStrike from "./classes/LightningStrike";
+import { webln } from "@getalby/sdk";
+
+// balance permission only ;-)
+const zapPoolBalanceNWCUrl =
+  "nostr+walletconnect://69effe7b49a6dd5cf525bd0905917a5005ffe480b58eeb8e861418cf3ae760d9?relay=wss://relay.getalby.com/v1&secret=99e8fe6bf8777aa7e4ba572ab1d2fab9912bcd781900323cb734a9063927efc3";
 
 /* Variables */
 let JUMP_KEY_PRESSED = false;
@@ -80,6 +85,19 @@ window.addEventListener("lwc:connected", () => {
 (async () => {
   // fetch the LNURL data
   await ln.fetch();
+})();
+
+let prizePoolBalance = 0;
+
+(async () => {
+  const nwc = new webln.NostrWebLNProvider({
+    nostrWalletConnectUrl: zapPoolBalanceNWCUrl,
+  });
+  await nwc.enable();
+  // FIXME: typings
+  const balanceResponse = await nwc.getBalance();
+  prizePoolBalance = balanceResponse.balance;
+  nwc.close();
 })();
 
 /* Code */
@@ -322,7 +340,7 @@ const animate = () => {
     }
     {
       const title = weblnEnabled ? "TAP TO START" : "CONNECT WALLET TO PLAY";
-      ctx.font = "32px FlappyBird";
+      ctx.font = "28px FlappyBird";
       ctx.fillStyle = "white";
       const text = ctx.measureText(title);
       const x = width / 2 - text.width / 2;
@@ -332,6 +350,40 @@ const animate = () => {
       ctx.strokeText(title, x, y);
       ctx.fillText(title, x, y);
     }
+    {
+      const terms = [
+        "1 sat per jump once you enter the pipes",
+        "make sure you have sufficient balance to play",
+      ];
+
+      terms.map((title, i) => {
+        ctx.font = "12px Helvetica";
+        ctx.fillStyle = "white";
+        const text = ctx.measureText(title);
+        const x = width / 2 - text.width / 2;
+        const y = 520 + i * 20;
+        ctx.strokeStyle = "rgb(0, 0, 0)";
+        ctx.lineWidth = 0;
+        ctx.strokeText(title, x, y);
+        ctx.fillText(title, x, y);
+      });
+    }
+  }
+
+  if (stillness) {
+    const title =
+      prizePoolBalance > 0
+        ? `PRIZE POOL: ${prizePoolBalance} SATS`
+        : "PRIZE POOL LOADING...";
+    ctx.font = "28px FlappyBird";
+    ctx.fillStyle = "white";
+    const text = ctx.measureText(title);
+    const x = width / 2 - text.width / 2;
+    const y = 480;
+    ctx.strokeStyle = "rgb(0, 0, 0)";
+    ctx.lineWidth = 0;
+    ctx.strokeText(title, x, y);
+    ctx.fillText(title, x, y);
   }
 
   if (stillness && !isFirstRound) {
@@ -372,13 +424,30 @@ const animate = () => {
       const text = ctx.measureText(score);
 
       const x = width / 2 - text.width / 2;
-      const y = 500;
+      const y = 400;
 
       ctx.strokeStyle = "rgb(0, 0, 0)";
       ctx.lineWidth = 8;
       ctx.strokeText(score, x, y);
       ctx.fillStyle = "rgb(255, 255, 255)";
       ctx.fillText(score, x, y);
+    }
+
+    {
+      const lines = ["screenshot and tag #zappybird", "for the chance to win"];
+      lines.forEach((line, index) => {
+        ctx.font = "14px Helvetica";
+        const text = ctx.measureText(line);
+
+        const x = width / 2 - text.width / 2;
+        const y = 500 + index * 20;
+
+        ctx.strokeStyle = "rgb(148, 87, 235)";
+        ctx.lineWidth = 2;
+        ctx.strokeText(line, x, y);
+        ctx.fillStyle = "rgb(255, 255, 255)";
+        ctx.fillText(line, x, y);
+      });
     }
   }
 };
@@ -478,7 +547,7 @@ const updateCurrentScore = () => {
   const text = ctx.measureText(score);
 
   const x = width / 2 - text.width / 2;
-  const y = 100;
+  const y = 120;
 
   ctx.strokeStyle = "rgb(0, 0, 0)";
   ctx.lineWidth = 8;
