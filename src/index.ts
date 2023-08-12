@@ -71,6 +71,11 @@ const ln = new LightningAddress("zappybird@getalby.com");
 
 let gameUniqueId: string = "";
 let canRestart = false;
+let weblnEnabled = false;
+
+window.addEventListener("lwc:connected", () => {
+  weblnEnabled = true;
+});
 
 (async () => {
   // fetch the LNURL data
@@ -301,6 +306,33 @@ const animate = () => {
 
   ctx.fillStyle = `rgba(0,0,0, ${(1 - lightningLight) * 0.2})`;
   ctx.fillRect(0, 0, width, height);
+
+  if (stillness && isFirstRound) {
+    {
+      const title = "ZAPPY BIRD";
+      ctx.font = "64px FlappyBird";
+      ctx.fillStyle = "white";
+      const text = ctx.measureText(title);
+      const x = width / 2 - text.width / 2;
+      const y = 200;
+      ctx.strokeStyle = "rgb(0, 0, 0)";
+      ctx.lineWidth = 0;
+      ctx.strokeText(title, x, y);
+      ctx.fillText(title, x, y);
+    }
+    {
+      const title = weblnEnabled ? "TAP TO START" : "CONNECT WALLET TO PLAY";
+      ctx.font = "32px FlappyBird";
+      ctx.fillStyle = "white";
+      const text = ctx.measureText(title);
+      const x = width / 2 - text.width / 2;
+      const y = 300;
+      ctx.strokeStyle = "rgb(0, 0, 0)";
+      ctx.lineWidth = 0;
+      ctx.strokeText(title, x, y);
+      ctx.fillText(title, x, y);
+    }
+  }
 
   if (stillness && !isFirstRound) {
     if (canRestart) {
