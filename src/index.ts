@@ -619,7 +619,13 @@ const drawRestartButton = () => {
   const w = 142;
   const h = 50;
 
-  ctx.drawImage(restartImage, width / 2 - w / 2, height / 2 - (h - 2), w, h);
+  ctx.drawImage(
+    restartImage,
+    width / 2 - w / 2,
+    /*height / 2 - (h - 2)*/ 300,
+    w,
+    h
+  );
 };
 
 canvas.addEventListener("mousedown", whenPlayerJump);
