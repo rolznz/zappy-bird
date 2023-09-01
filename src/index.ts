@@ -78,7 +78,7 @@ let gameUniqueId: string = "";
 let canRestart = false;
 let weblnEnabled = false;
 
-window.addEventListener("lwc:connected", () => {
+window.addEventListener("bc:connected", () => {
   weblnEnabled = true;
 });
 
