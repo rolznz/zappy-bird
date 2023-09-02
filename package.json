@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@getalby/lightning-tools": "^4.0.2",
-    "@getalby/sdk": "^2.2.3",
+    "@getalby/sdk": "^2.4.0",
     "copy-webpack-plugin": "^11.0.0",
     "seedrandom": "^3.0.5"
   }
