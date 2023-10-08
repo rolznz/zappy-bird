@@ -94,7 +94,6 @@ let prizePoolBalance = 0;
     nostrWalletConnectUrl: zapPoolBalanceNWCUrl,
   });
   await nwc.enable();
-  // FIXME: typings
   const balanceResponse = await nwc.getBalance();
   prizePoolBalance = balanceResponse.balance;
   nwc.close();
