@@ -44,7 +44,7 @@
 body {
   background-color: rgb(38, 43, 48);
   overflow: hidden;
-  font: normal 24px Helvetica, Arial, sans-serif;
+  /*font: normal 24px Helvetica, Arial, sans-serif;*/
   width: 100vw;
   height: 100vh;
   min-height: 100vh;
