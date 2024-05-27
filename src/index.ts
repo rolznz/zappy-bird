@@ -451,12 +451,15 @@ const animate = () => {
 
   const now = Date.now();
   const elapsed = now - lastFrame;
-  lastFrame = now;
-  // console.log("elapsed", elapsed);
+  const FRAME_LENGTH = 16;
+  if (elapsed > FRAME_LENGTH) {
+    console.warn("Zappy bird is running slowly (" + elapsed + "ms behind)");
+  }
 
   setTimeout(() => {
     animation = requestAnimationFrame(animate);
-  }, Math.max(32 - elapsed, 0));
+    lastFrame += FRAME_LENGTH;
+  }, Math.max(FRAME_LENGTH - elapsed, 0));
 };
 
 const restart = async () => {
