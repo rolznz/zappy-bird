@@ -190,10 +190,6 @@ const reset = () => {
   genericObjects = [];
 };
 
-const cancelAnimation = () => {
-  setTimeout(() => cancelAnimationFrame(animation), 25);
-};
-
 const whenPlayerLose = (userIsLose: boolean = false) => {
   if (stillness) {
     return;
@@ -277,9 +273,8 @@ const drawLightning = () => {
   }
 };
 
+let lastFrame = 0;
 const animate = () => {
-  // Code
-  animation = requestAnimationFrame(animate);
   ctx.clearRect(0, 0, width, height);
 
   genericObjects.forEach((obj) => obj.draw());
@@ -453,6 +448,15 @@ const animate = () => {
       });
     }
   }
+
+  const now = Date.now();
+  const elapsed = now - lastFrame;
+  lastFrame = now;
+  // console.log("elapsed", elapsed);
+
+  setTimeout(() => {
+    animation = requestAnimationFrame(animate);
+  }, Math.max(32 - elapsed, 0));
 };
 
 const restart = async () => {
@@ -505,9 +509,10 @@ const start = () => {
   updateCurrentScore();
   lightningStrikes = [];
 
-  if (animation) cancelAnimation();
-
-  setTimeout(animate, 25);
+  if (!animation) {
+    lastFrame = Date.now();
+    animate();
+  }
 };
 
 const resetScore = () => {
