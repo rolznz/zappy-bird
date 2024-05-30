@@ -88,8 +88,7 @@ window.addEventListener("bc:connected", () => {
 })();
 
 let prizePoolBalance = 0;
-
-(async () => {
+const loadPrizePoolBalance = async () => {
   const nwc = new webln.NostrWebLNProvider({
     nostrWalletConnectUrl: zapPoolBalanceNWCUrl,
   });
@@ -97,7 +96,8 @@ let prizePoolBalance = 0;
   const balanceResponse = await nwc.getBalance();
   prizePoolBalance = balanceResponse.balance;
   nwc.close();
-})();
+};
+loadPrizePoolBalance();
 
 /* Code */
 const addNewPlatform = () => {
@@ -213,6 +213,7 @@ const whenPlayerLose = (userIsLose: boolean = false) => {
       canRestart = true;
       document.body.style.cursor = "pointer";
       document.getElementById("flappyBird").addEventListener("click", restart);
+      loadPrizePoolBalance();
     },
     isFirstRound ? 0 : 1000
   );
@@ -224,10 +225,9 @@ const whenPlayerDamaged = () => {
     if (player.position.x >= pipe.position.x + pipe.width) reachedPipes++;
 
     if (
-      ((pipe.state === "bottom" &&
-        player.position.y + player.velocity >= pipe.position.y) ||
+      ((pipe.state === "bottom" && player.position.y >= pipe.position.y) ||
         (pipe.state === "top" &&
-          player.position.y - player.velocity <=
+          player.position.y + player.height * 0.5 <=
             pipe.position.y + pipe.height)) &&
       player.position.x >= pipe.position.x - player.width &&
       player.position.x <= pipe.position.x + pipe.width
