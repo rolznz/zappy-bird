@@ -1,4 +1,31 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="author" content="Roland"/><meta name="description" content="Zappy Bird is an arcade-style game in which the player controls the bird Faby, which moves persistently to the right. The player is tasked with navigating Faby through pairs of pipes that have equally sized gaps placed at random heights."/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><title>Zappy Bird</title><link rel="shortcut icon" href="/zappy-bird/assets/images/favicon.png"/><link rel="stylesheet" href="/zappy-bird/assets/styles/app.css"/><link rel="stylesheet" href="/zappy-bird/assets/styles/styles.css"/><link rel="manifest" href="/zappy-bird/assets/manifest.webmanifest"/><script type="module">import { onConnected } from "https://esm.sh/@getalby/bitcoin-connect@3.7.0-beta.0";
+<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="author" content="Roland"/><meta name="description" content="Zappy Bird is an arcade-style game in which the player controls the bird Faby, which moves persistently to the right. The player is tasked with navigating Faby through pairs of pipes that have equally sized gaps placed at random heights."/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><title>Zappy Bird</title><link rel="shortcut icon" href="/zappy-bird/assets/images/favicon.png"/><link rel="stylesheet" href="/zappy-bird/assets/styles/app.css"/><link rel="stylesheet" href="/zappy-bird/assets/styles/styles.css"/><link rel="manifest" href="/zappy-bird/assets/manifest.webmanifest"/><script type="module">import {
+        init,
+        onConnected,
+      } from "https://esm.sh/@getalby/bitcoin-connect@3.7.0-beta.1";
+
+      init({
+        appName: "Zappy Bird",
+        appIcon:
+          "https://rolznz.github.io/zappy-bird/assets/images/favicon.png",
+        filters: ["nwc"],
+        showBalance: true,
+        providerConfig: {
+          nwc: {
+            authorizationUrlOptions: {
+              requestMethods: ["get_balance", "pay_invoice"],
+              maxAmount: 10_000_000, // 10k sats
+              budgetRenewal: "monthly",
+              // expiresAt: new Date("2030-01-01"),
+              // isolated: true,
+              // returnTo: "https://example.com",
+              metadata: {
+                app_store_app_id: "zappy-bird",
+                //message: "custom metadata from bitcoin connect demo",
+              },
+            },
+          },
+        },
+      });
 
       onConnected((provider) => {
         window.webln = provider;
