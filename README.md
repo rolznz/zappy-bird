@@ -1,6 +1,6 @@
 # Zappy Bird
 
-[![Sponsor](https://lnfly.albylabs.com/api/apps/386/proxy/api/badge/dfc4fac8-3ada-4d4f-aaa5-ca742ee2ad96)](https://lnfly.albylabs.com/api/apps/386/view?project=dfc4fac8-3ada-4d4f-aaa5-ca742ee2ad96)
+[![Sponsor](https://lnfly.albylabs.com/api/apps/386/proxy/api/badge/dfc4fac8-3ada-4d4f-aaa5-ca742ee2ad96)](https://sponsor.lnfly.albylabs.com/?project=dfc4fac8-3ada-4d4f-aaa5-ca742ee2ad96)
 
 PLAY HERE: https://rolznz.github.io/zappy-bird/
 
