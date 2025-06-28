@@ -1,5 +1,7 @@
 # Zappy Bird
 
+[![Sponsor](https://lnfly.albylabs.com/api/apps/386/proxy/api/badge/d8121pjpenc)](https://lnfly.albylabs.com/api/apps/386/view?sponsor=d8121pjpenc)
+
 PLAY HERE: https://rolznz.github.io/zappy-bird/
 
 Lightning powered fork of https://github.com/iamaliybi/flappy-bird
@@ -8,10 +10,9 @@ Zappy Bird is an arcade-style game in which the player controls the bird Faby, w
 <br />
 <br />
 
-
-
 ## Demo
-<img src="https://raw.githubusercontent.com/iamaliybi/flappy-bird/main/assets/demo.png" alt="demo" style="width: 320px;"/>
+![image](https://github.com/user-attachments/assets/fb41c0e6-38c3-46f3-a7ca-e2a379580948)
+
 
 <br />
 
