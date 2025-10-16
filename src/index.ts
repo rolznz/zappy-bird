@@ -9,7 +9,7 @@ import { webln } from "@getalby/sdk";
 
 // balance permission only ;-)
 const zapPoolBalanceNWCUrl =
-  "nostr+walletconnect://69effe7b49a6dd5cf525bd0905917a5005ffe480b58eeb8e861418cf3ae760d9?relay=wss://relay.getalby.com/v1&secret=99e8fe6bf8777aa7e4ba572ab1d2fab9912bcd781900323cb734a9063927efc3";
+  "nostr+walletconnect://72341eb832a4724fa61e08f0627c4fcc7b9604d8a402624375b9876beb4ac954?relay=wss://relay.getalby.com/v1&secret=cbb40205fa859918f9667be19c7e5f62f1d2a698a37a85805e058a042e37d4fc";
 
 /* Variables */
 let JUMP_KEY_PRESSED = false;
@@ -72,7 +72,7 @@ const playerImage = createImage(IMAGES.bird);
 const pipeTopImage = createImage(IMAGES.pipeTop);
 const pipeBottomImage = createImage(IMAGES.pipeBottom);
 
-const ln = new LightningAddress("zappybird@getalby.com");
+const ln = new LightningAddress("zappybird2@getalby.com");
 
 let gameUniqueId: string = "";
 let canRestart = false;
