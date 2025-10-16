@@ -19,40 +19,6 @@
     <link rel="stylesheet" href="/zappy-bird/assets/styles/app.css" />
     <link rel="stylesheet" href="/zappy-bird/assets/styles/styles.css" />
     <link rel="manifest" href="/zappy-bird/assets/manifest.webmanifest" />
-    <script type="module">
-      import {
-        init,
-        onConnected,
-      } from "https://esm.sh/@getalby/bitcoin-connect@^3.11.3";
-
-      init({
-        appName: "Zappy Bird",
-        appIcon:
-          "https://rolznz.github.io/zappy-bird/assets/images/favicon.png",
-        filters: ["nwc"],
-        showBalance: true,
-        providerConfig: {
-          nwc: {
-            authorizationUrlOptions: {
-              requestMethods: ["get_balance", "pay_invoice"],
-              maxAmount: 10_000_000, // 10k sats
-              budgetRenewal: "monthly",
-              // expiresAt: new Date("2030-01-01"),
-              // isolated: true,
-              // returnTo: "https://example.com",
-              metadata: {
-                app_store_app_id: "zappy-bird",
-                //message: "custom metadata from bitcoin connect demo",
-              },
-            },
-          },
-        },
-      });
-
-      onConnected((provider) => {
-        window.webln = provider;
-      });
-    </script>
   </head>
 
   <body>

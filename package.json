@@ -37,6 +37,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@getalby/bitcoin-connect": "^3.11.3",
     "@getalby/lightning-tools": "^4.0.2",
     "@getalby/sdk": "^2.4.0",
     "copy-webpack-plugin": "^11.0.0",

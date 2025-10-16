@@ -6,6 +6,10 @@ import Pipe from "./classes/Pipe";
 import { LightningAddress } from "@getalby/lightning-tools";
 import LightningStrike from "./classes/LightningStrike";
 import { webln } from "@getalby/sdk";
+import {
+  init as initBitcoinConnect,
+  onConnected,
+} from "@getalby/bitcoin-connect";
 
 // balance permission only ;-)
 const zapPoolBalanceNWCUrl =
@@ -78,7 +82,31 @@ let gameUniqueId: string = "";
 let canRestart = false;
 let weblnEnabled = false;
 
-window.addEventListener("bc:connected", () => {
+initBitcoinConnect({
+  appName: "Zappy Bird",
+  appIcon: "https://rolznz.github.io/zappy-bird/assets/images/favicon.png",
+  filters: ["nwc"],
+  showBalance: true,
+  providerConfig: {
+    nwc: {
+      authorizationUrlOptions: {
+        requestMethods: ["get_balance", "pay_invoice"],
+        maxAmount: 10_000_000, // 10k sats
+        budgetRenewal: "monthly",
+        // expiresAt: new Date("2030-01-01"),
+        // isolated: true,
+        // returnTo: "https://example.com",
+        metadata: {
+          app_store_app_id: "zappy-bird",
+          //message: "custom metadata from bitcoin connect demo",
+        },
+      },
+    },
+  },
+});
+
+onConnected((provider) => {
+  window.webln = provider;
   weblnEnabled = true;
 });
 
